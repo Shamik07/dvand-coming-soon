@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dvand - Coming Soon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;1,900&family=Raleway:wght@400;500;600&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8f9ff;
+            overflow: hidden;
+            height: 100vh;
+            transition: background 0.8s ease;
+        }
+
+        body.night-theme {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+        }
+
+        .flower-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .inner-content {
+            width: 330px;
+            height: 330px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.5rem;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.8s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+        }
+
+        .inner-content.show {
+            opacity: 1;
+            animation: contentFadeIn 1s ease-out forwards;
+        }
+
+        @keyframes contentFadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .night-theme .inner-content {
+            background: rgba(15, 15, 35, 0.85);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            font-style: italic;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .tagline {
+            font-family: 'Raleway', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+            transition: color 0.8s ease;
+        }
+
+        .night-theme .tagline {
+            color: #e8eaed;
+        }
+
+        .description {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.7rem;
+            color: #5a6c7d;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+            transition: color 0.8s ease;
+        }
+
+        .night-theme .description {
+            color: #b3b8c4;
+        }
+
+        .waitlist-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+            width: 100%;
+        }
+
+        .email-input {
+            width: 85%;
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            font-family: 'Work Sans', sans-serif;
+            border: 2px solid #e1e8ed;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .night-theme .email-input {
+            background: rgba(30, 30, 50, 0.8);
+            border: 2px solid #4a5568;
+            color: #e8eaed;
+            text-align: center;
+        }
+
+        .night-theme .email-input::placeholder {
+            color: #a0aec0;
+            text-align: center;
+        }
+
+        .email-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .night-theme .email-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+        }
+
+        .join-btn {
+            width: 60%;
+            padding: 10px 20px;
+            font-size: 0.75rem;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .join-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #7c8ceb 0%, #8659b3 100%);
+        }
+
+        .join-btn:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            padding: 0.8rem 1rem;
+            border-radius: 15px;
+            margin-top: 0.5rem;
+            display: none;
+            font-size: 0.7rem;
+            font-family: 'Work Sans', sans-serif;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-toggle" id="themeToggle">🌙</div>
+    <canvas class="flower-canvas" id="flowerCanvas"></canvas>
+    <main class="content">
+        <div class="inner-content">
+            <h1 class="logo">Dvand</h1>
+            <h2 class="tagline">Where Creativity Meets Competition</h2>
+            <p class="description">
+                Get ready for the ultimate short-form video competition platform. 
+                Create, compete, and win amazing prizes with your creative content.
+            </p>
+            <form class="waitlist-form" id="waitlistForm">
+                <input type="email" class="email-input" placeholder="Enter your email address" required id="emailInput">
+                <button type="submit" class="join-btn">Join Waitlist</button>
+            </form>
+            <div class="success-message" id="successMessage">
+                🎉 Welcome to the Dvand family! We'll notify you when we launch.
+            </div>
+        </div>
+    </main>
+    <script>
+        class FlowerWallAnimation {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.flowers = [];
+                this.dayColors = [
+                    '#673AB7', '#FF5678', '#FF9800', '#9C27B0', 
+                    '#2ECC71', '#009688', '#1ABC9C', '#D81B60',
+                    '#E91E63', '#3F51B5', '#00BCD4', '#4CAF50'
+                ];
+                this.nightColors = [
+                    '#BB86FC', '#03DAC6', '#CF6679', '#FFB74D',
+                    '#4FC3F7', '#81C784', '#F06292', '#64B5F6',
+                    '#FFD54F', '#A1C181', '#F8BBD9', '#B39DDB'
+                ];
+                this.centerColor = '#FCD34D';
+                this.nightCenterColor = '#FFE082';
+                this.radiusGap = 120;
+                this.minFlowersPerRing = 8;
+                this.animationStart = Date.now();
+                this.isNightTheme = false;
+                this.contentShown = false;
+                this.init();
+                this.animate();
+            }
+            init() {
+                this.resize();
+                this.createFlowers();
+                window.addEventListener('resize', () => this.resize());
+            }
+            resize() {
+                const dpr = window.devicePixelRatio || 1;
+                this.canvas.width = window.innerWidth * dpr;
+                this.canvas.height = window.innerHeight * dpr;
+                this.canvas.style.width = window.innerWidth + 'px';
+                this.canvas.style.height = window.innerHeight + 'px';
+                this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                this.centerX = window.innerWidth / 2;
+                this.centerY = window.innerHeight / 2;
+                // Hide content while flowers regenerate on resize
+                const innerContent = document.querySelector('.inner-content');
+                innerContent.classList.remove('show');
+                this.contentShown = false;
+                this.createFlowers();
+            }
+            createFlowers() {
+                this.flowers = [];
+                const currentColors = this.isNightTheme ? this.nightColors : this.dayColors;
+                
+                // Calculate how many rings needed to fill entire screen
+                const maxDistance = Math.sqrt(this.centerX * this.centerX + this.centerY * this.centerY);
+                const startRadius = 250; // Increased from 200 to better fit content
+                const neededRings = Math.ceil((maxDistance - startRadius) / this.radiusGap) + 2; // +2 for buffer
+                
+                let radius = startRadius;
+                let secondRingAnimationTime = 0;
+                
+                for (let i = 0; i < neededRings; i++) {
+                    const flowersInRing = Math.max(this.minFlowersPerRing, Math.round(2 * Math.PI * radius / 86));
+                    const ring = {
+                        radius: radius,
+                        flowers: [],
+                        direction: i % 2 === 0 ? 1 : -1
+                    };
+                    
+                    for (let j = 0; j < flowersInRing; j++) {
+                        const angle = (2 * Math.PI * j) / flowersInRing;
+                        // Calculate fade based on ring position (first 3 rings get special treatment)
+                        let baseFade;
+                        if (i === 0) baseFade = 1.0;        // Inner ring: 100%
+                        else if (i === 1) baseFade = 0.75;  // Middle ring: 75% 
+                        else if (i === 2) baseFade = 0.5;   // Third ring: 50%
+                        else baseFade = Math.max(0.2, 0.5 - ((i - 2) * 0.1)); // Further rings fade more
+                        
+                        const finalOpacity = baseFade * (0.7 + Math.random() * 0.3);
+                        ring.flowers.push({
+                            baseAngle: angle,
+                            color: currentColors[Math.floor(Math.random() * currentColors.length)],
+                            size: 60,
+                            opacity: finalOpacity
+                        });
+                        
+                        // Calculate when the second ring (index 1) will finish animating
+                        if (i <= 1) { // Only consider first two rings (0 and 1)
+                            const ringDelay = i * 0.3;
+                            const flowerDelay = j * 0.05;
+                            const animationDuration = 0.6;
+                            const totalTime = ringDelay + flowerDelay + animationDuration;
+                            secondRingAnimationTime = Math.max(secondRingAnimationTime, totalTime);
+                        }
+                    }
+                    this.flowers.push(ring);
+                    radius += this.radiusGap;
+                }
+                
+                // Show content after second ring is done (with small buffer)
+                if (!this.contentShown) {
+                    setTimeout(() => {
+                        this.showContent();
+                    }, (secondRingAnimationTime + 0.1) * 1000); // +100ms buffer
+                }
+            }
+            drawFlower(x, y, size, color, opacity) {
+                this.ctx.save();
+                this.ctx.globalAlpha = opacity;
+                this.ctx.translate(x, y);
+                this.ctx.fillStyle = color;
+                const petalCount = 8;
+                const petalSize = size / 3;
+                for (let i = 0; i < petalCount; i++) {
+                    const angle = (2 * Math.PI * i) / petalCount;
+                    const px = Math.cos(angle) * petalSize;
+                    const py = Math.sin(angle) * petalSize;
+                    this.ctx.beginPath();
+                    this.ctx.arc(px, py, petalSize, 0, 2 * Math.PI);
+                    this.ctx.fill();
+                }
+                this.ctx.fillStyle = this.isNightTheme ? this.nightCenterColor : this.centerColor;
+                this.ctx.beginPath();
+                this.ctx.arc(0, 0, petalSize * 0.4, 0, 2 * Math.PI);
+                this.ctx.fill();
+                this.ctx.restore();
+            }
+            animate() {
+                const currentTime = Date.now();
+                const elapsed = (currentTime - this.animationStart) / 1000;
+                
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                const rotationSpeed = 0.1875; // All rings move at same speed
+                
+                this.flowers.forEach((ring, ringIndex) => {
+                    // Stagger ring appearance: inner ring starts immediately, others delayed
+                    const ringDelay = ringIndex * 0.3; // 300ms delay between rings
+                    const ringProgress = Math.max(0, elapsed - ringDelay);
+                    
+                    if (ringProgress <= 0) return; // Ring hasn't started appearing yet
+                    
+                    const currentRotation = elapsed * rotationSpeed * ring.direction;
+                    
+                    ring.flowers.forEach((flower, flowerIndex) => {
+                        // Stagger individual flower appearance within each ring
+                        const flowerDelay = (flowerIndex * 0.05); // 50ms delay between flowers in ring
+                        const flowerProgress = Math.max(0, ringProgress - flowerDelay);
+                        
+                        if (flowerProgress <= 0) return; // Flower hasn't started appearing yet
+                        
+                        // Calculate pop-in scale (0 to 1 with bounce)
+                        const animationDuration = 0.6; // 600ms for each flower to fully appear
+                        const normalizedProgress = Math.min(1, flowerProgress / animationDuration);
+                        const scale = normalizedProgress > 0 ? this.easeOutBack(normalizedProgress) : 0;
+                        
+                        const angle = flower.baseAngle + currentRotation;
+                        const x = this.centerX + Math.cos(angle) * ring.radius;
+                        const y = this.centerY + Math.sin(angle) * ring.radius;
+                        
+                        // Apply scale to flower size
+                        const scaledSize = flower.size * scale;
+                        const scaledOpacity = flower.opacity * Math.min(1, normalizedProgress * 2); // Fade in quickly
+                        
+                        if (scale > 0) {
+                            this.drawFlower(x, y, scaledSize, flower.color, scaledOpacity);
+                        }
+                    });
+                });
+                
+                requestAnimationFrame(() => this.animate());
+            }
+            easeOutBack(t) {
+                const c1 = 1.70158;
+                const c3 = c1 + 1;
+                return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+            }
+            
+            toggleTheme() {
+                this.isNightTheme = !this.isNightTheme;
+                // Hide content while flowers regenerate
+                const innerContent = document.querySelector('.inner-content');
+                innerContent.classList.remove('show');
+                this.contentShown = false;
+                this.createFlowers();
+            }
+            
+            showContent() {
+                if (!this.contentShown) {
+                    const innerContent = document.querySelector('.inner-content');
+                    innerContent.classList.add('show');
+                    this.contentShown = true;
+                }
+            }
+        }
+        const canvas = document.getElementById('flowerCanvas');
+        const flowerAnimation = new FlowerWallAnimation(canvas);
+        
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        themeToggle.addEventListener('click', function() {
+            body.classList.toggle('night-theme');
+            flowerAnimation.toggleTheme();
+            
+            // Update toggle icon
+            if (body.classList.contains('night-theme')) {
+                themeToggle.textContent = '☀️';
+            } else {
+                themeToggle.textContent = '🌙';
+            }
+        });
+        
+        document.getElementById('waitlistForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('emailInput').value;
+            const successMessage = document.getElementById('successMessage');
+            setTimeout(() => {
+                successMessage.classList.add('show');
+                this.style.display = 'none';
+                console.log('Email submitted:', email);
+            }, 500);
+        });
+    </script>
+</body>
+</html>
