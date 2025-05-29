@@ -138,24 +138,15 @@ function createResponse(success, message, data = null) {
     response.data = data;
   }
   
-  // Determine allowed origin based on environment
-  const allowedOrigin = getAllowedOrigin();
-  
   return ContentService
     .createTextOutput(JSON.stringify(response))
-    .setMimeType(ContentService.MimeType.JSON)
-    .setHeaders({
-      'Access-Control-Allow-Origin': allowedOrigin,
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Vary': 'Origin'  // Good practice for caching
-    });
+    .setMimeType(ContentService.MimeType.JSON);
 }
 
 function getAllowedOrigin() {
   // Configuration - Update this as needed
-  const PRODUCTION_MODE = true; // Set to false for testing
-  const ALLOW_HTTP_DURING_TRANSITION = false; // Set to false once HTTPS is ready
+  const PRODUCTION_MODE = false; // Set to false for testing
+  const ALLOW_HTTP_DURING_TRANSITION = true; // Set to false once HTTPS is ready
   
   if (!PRODUCTION_MODE) {
     // Development mode - allow all origins
@@ -197,12 +188,13 @@ function isLikelySpam(email, userAgent) {
     if (pattern.test(email)) return true;
   }
   
-  // Check user agent (basic bot detection)
-  if (!userAgent || userAgent === 'Unknown' || userAgent.length < 10) {
+  // ✅ RELAXED: Only block if completely missing user agent
+  // Removed the strict length check that was blocking legitimate users
+  if (!userAgent) {
     return true;
   }
   
-  // Check for bot patterns in user agent
+  // Check for obvious bot patterns in user agent
   const botPatterns = [/bot/i, /crawl/i, /spider/i, /scrape/i];
   for (let pattern of botPatterns) {
     if (pattern.test(userAgent)) return true;
